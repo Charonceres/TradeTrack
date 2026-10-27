@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TradeTrack — a modern trading journal and performance analytics workspace.">
+  <title>TradeTrack | Trading Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-page="overview" aria-label="TradeTrack home">
+        <span class="brand-mark"><i></i><i></i><i></i></span>
+        <span>trade<span class="brand-light">track</span></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-page="overview"><span class="nav-icon">◫</span> Overview</button>
+        <button class="nav-item" data-page="trades"><span class="nav-icon">↗</span> Trade journal <span class="nav-count" id="tradeNavCount">8</span></button>
+        <button class="nav-item" data-page="analytics"><span class="nav-icon">▥</span> Analytics</button>
+        <button class="nav-item" data-page="risk"><span class="nav-icon">◎</span> Risk calculator</button>
+        <button class="nav-item" data-page="journal"><span class="nav-icon">▤</span> Mindset journal</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="plan-card">
+          <div class="plan-icon">✦</div>
+          <div><strong>Trade with intention</strong><p>Consistency beats intensity.</p></div>
+        </div>
+        <button class="nav-item" data-page="settings"><span class="nav-icon">⚙</span> Settings</button>
+        <div class="profile-mini">
+          <div class="avatar" id="sidebarAvatar">R</div>
+          <div class="profile-text"><strong id="profileDisplayName">Rhythm</strong><span>Personal workspace</span></div>
+          <button class="more-btn" aria-label="Profile options">•••</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+        <div class="breadcrumb"><span>Workspace</span><b>/</b><strong id="breadcrumbPage">Overview</strong></div>
+        <div class="topbar-actions">
+          <div class="backend-badge" id="backendBadge" title="Backend Server Status"><span class="status-dot"></span> <span id="backendBadgeText">API Connected</span></div>
+          <div class="market-status" id="marketStatus" title="Market Status"><span class="status-dot"></span> <span id="marketStatusText">Loading markets...</span></div>
+          <button class="icon-button" id="themeToggle" title="Toggle appearance" aria-label="Toggle appearance">☼</button>
+          <button class="top-avatar" id="topAvatar" title="Profile">R</button>
+        </div>
+      </header>
+
+      <section class="page active" id="page-overview">
+        <div class="welcome-row">
+          <div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR TRADING WORKSPACE</div><h1>Good evening, <span id="welcomeUserName">Rhythm</span> <span class="wave">✦</span></h1><p class="muted">Here's what's happening with your trading performance.</p></div>
+          <div class="welcome-actions"><button class="btn btn-secondary" id="exportOverview">↧ Export report</button><button class="btn btn-primary" data-open-add>＋ Log a trade</button></div>
+        </div>
+        <div class="date-filter-row"><div class="period-tabs" id="overviewPeriods"><button class="selected" data-period="7D">7D</button><button data-period="1M">1M</button><button data-period="3M">3M</button><button data-period="6M">6M</button><button data-period="1Y">1Y</button><button data-period="ALL">ALL</button></div><span class="data-note" id="overviewDataNote"><span class="status-dot"></span> SQLite Database · Live Analytics</span></div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Net P&amp;L</span><span class="stat-symbol green-bg">↗</span></div><div class="stat-value" id="statPnl">+$2,840.50</div><div class="stat-foot"><span class="positive">↑ 12.8%</span><span>vs. previous period</span><svg class="sparkline" viewBox="0 0 100 30" aria-hidden="true"><polyline points="1,24 12,20 22,22 34,12 44,16 55,9 66,13 78,4 88,9 99,2"/></svg></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Win rate</span><span class="stat-symbol purple-bg">◉</span></div><div class="stat-value" id="statWin">68.4<span class="unit">%</span></div><div class="stat-foot"><span class="positive">↑ 4.2%</span><span>vs. previous period</span><div class="mini-progress"><span style="width:68.4%"></span></div></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Profit factor</span><span class="stat-symbol blue-bg">⌁</span></div><div class="stat-value" id="statFactor">1.86</div><div class="stat-foot"><span class="positive">↑ 0.18</span><span>vs. previous period</span><div class="mini-progress blue-progress"><span style="width:62%"></span></div></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Total trades</span><span class="stat-symbol orange-bg">⇄</span></div><div class="stat-value" id="statTrades">38</div><div class="stat-foot"><span class="positive">↑ 8 trades</span><span>vs. previous period</span><div class="trade-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel chart-panel">
+            <div class="panel-heading"><div><h2>Performance overview</h2><p class="muted">Your cumulative profit over time</p></div><button class="select-like" id="chartMetric">Net P&amp;L⌄</button></div>
+            <div class="chart-legend"><span><i class="legend-dot"></i> Cumulative P&amp;L</span><span class="legend-period">Last 7 days <b>·</b> USD</span></div>
+            <div class="chart-wrap"><canvas id="equityChart" aria-label="Cumulative profit and loss chart"></canvas></div>
+          </article>
+          <article class="panel breakdown-panel">
+            <div class="panel-heading"><div><h2>Trade outcomes</h2><p class="muted">A quick look at your execution</p></div><button class="dots-btn" aria-label="More options">•••</button></div>
+            <div class="donut-wrap"><canvas id="outcomeChart" aria-label="Winning, losing and breakeven trades"></canvas><div class="donut-center"><strong id="outcomeTotal">38</strong><span>total trades</span></div></div>
+            <div class="outcome-list"><div><span><i class="outcome-dot win"></i> Winning trades</span><strong id="winningCount">26 <small>68.4%</small></strong></div><div><span><i class="outcome-dot loss"></i> Losing trades</span><strong id="losingCount">10 <small>26.3%</small></strong></div><div><span><i class="outcome-dot even"></i> Breakeven</span><strong id="evenCount">2 <small>5.3%</small></strong></div></div>
+          </article>
+        </div>
+
+        <article class="panel recent-panel">
+          <div class="panel-heading"><div><h2>Recent trades</h2><p class="muted">Your latest activity at a glance</p></div><button class="text-link" data-page="trades">View all trades <span>→</span></button></div>
+          <div class="table-scroll"><table class="trade-table"><thead><tr><th>INSTRUMENT</th><th>TYPE</th><th>DATE</th><th>STRATEGY</th><th>R:R</th><th>NET P&amp;L</th><th>STATUS</th></tr></thead><tbody id="recentTradesBody"></tbody></table></div>
+        </article>
+        <div class="bottom-grid">
+          <article class="panel insight-panel"><div class="panel-heading"><div><h2>Performance insight</h2><p class="muted">One thing worth noticing</p></div><span class="insight-icon">✧</span></div><div class="insight-content"><div class="insight-tag">YOUR EDGE</div><h3>You're strongest during the London session.</h3><p>Your sample journal shows a higher win rate on trades tagged with your London breakout setup. Keep tracking this pattern before drawing conclusions.</p><button class="text-link" data-page="analytics">Explore analytics →</button></div></article>
+          <article class="panel goal-panel"><div class="panel-heading"><div><h2>Monthly goal</h2><span class="goal-badge">IN PROGRESS</span></div><button class="dots-btn" aria-label="Goal options">•••</button></div><div class="goal-number"><strong>$2,840</strong><span>of $4,000 target</span></div><div class="goal-track"><span style="width:71%"></span></div><div class="goal-foot"><span>71% completed</span><span>$1,160 to go</span></div><div class="goal-message">You're on track. Keep your risk consistent.</div></article>
+        </div>
+        <footer class="footer-note">TradeTrack <span>•</span> Built for better trading habits <span class="footer-right">Frontend concept · Demo data only</span></footer>
+      </section>
+
+      <section class="page" id="page-trades">
+        <div class="page-title-row"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR HISTORY</div><h1>Trade journal</h1><p class="muted">Every trade is a chance to learn something.</p></div><button class="btn btn-primary" data-open-add>＋ Add new trade</button></div>
+        <div class="stats-grid compact-stats"><article class="stat-card"><div class="stat-top"><span>Trades logged</span><span class="stat-symbol green-bg">⇄</span></div><div class="stat-value" id="journalTotal">8</div><div class="stat-caption">Across all strategies</div></article><article class="stat-card"><div class="stat-top"><span>Net P&amp;L</span><span class="stat-symbol purple-bg">↗</span></div><div class="stat-value" id="journalPnl">+$1,246.80</div><div class="stat-caption">After fees</div></article><article class="stat-card"><div class="stat-top"><span>Avg. R multiple</span><span class="stat-symbol blue-bg">◎</span></div><div class="stat-value">1.72<span class="unit">R</span></div><div class="stat-caption">Risk-adjusted outcome</div></article></div>
+        <article class="panel full-table-panel">
+          <div class="table-toolbar"><div class="search-box"><span>⌕</span><input id="tradeSearch" type="search" placeholder="Search symbol or strategy..." aria-label="Search trades"></div><div class="toolbar-filters"><select id="typeFilter" aria-label="Filter by direction"><option value="all">All directions</option><option value="Long">Long</option><option value="Short">Short</option></select><select id="resultFilter" aria-label="Filter by result"><option value="all">All results</option><option value="win">Winners</option><option value="loss">Losers</option></select><button class="btn btn-secondary btn-small" id="exportCsv">↧ Export CSV</button></div></div>
+          <div class="table-scroll"><table class="trade-table full-trade-table"><thead><tr><th>INSTRUMENT</th><th>MARKET</th><th>DIRECTION</th><th>ENTRY → EXIT</th><th>DATE</th><th>STRATEGY</th><th>NET P&amp;L</th><th></th></tr></thead><tbody id="allTradesBody"></tbody></table></div>
+          <div class="table-footer"><span id="tableCount">Showing 8 trades</span><span>Sample data can be edited or removed.</span></div>
+        </article>
+      </section>
+
+      <section class="page" id="page-analytics">
+        <div class="page-title-row"><div><div class="eyebrow"><span class="eyebrow-line"></span> KNOW YOUR NUMBERS</div><h1>Performance analytics</h1><p class="muted">Turn your trading history into actionable insights.</p></div><button class="btn btn-secondary" id="analyticsExport">↧ Export data</button></div>
+        <div class="stats-grid"><article class="stat-card"><div class="stat-top"><span>Average winner</span><span class="stat-symbol green-bg">↗</span></div><div class="stat-value">+$184.20</div><div class="stat-caption">Per winning trade</div></article><article class="stat-card"><div class="stat-top"><span>Average loser</span><span class="stat-symbol orange-bg">↘</span></div><div class="stat-value">−$98.40</div><div class="stat-caption">Per losing trade</div></article><article class="stat-card"><div class="stat-top"><span>Best strategy</span><span class="stat-symbol purple-bg">✦</span></div><div class="stat-value text-stat">London Breakout</div><div class="stat-caption">By net P&amp;L in demo data</div></article><article class="stat-card"><div class="stat-top"><span>Consistency score</span><span class="stat-symbol blue-bg">◉</span></div><div class="stat-value">82<span class="unit">/100</span></div><div class="stat-caption">Illustrative journal score</div></article></div>
+        <div class="dashboard-grid analytics-charts"><article class="panel chart-panel"><div class="panel-heading"><div><h2>Monthly P&amp;L</h2><p class="muted">Compare results month over month</p></div><span class="subtle-pill">2026</span></div><div class="chart-wrap chart-medium"><canvas id="monthlyChart"></canvas></div></article><article class="panel chart-panel"><div class="panel-heading"><div><h2>Strategy performance</h2><p class="muted">Net P&amp;L by setup</p></div></div><div class="chart-wrap chart-medium"><canvas id="strategyChart"></canvas></div></article></div>
+        <div class="dashboard-grid"><article class="panel"><div class="panel-heading"><div><h2>Execution checklist</h2><p class="muted">Track how consistently you follow your plan</p></div></div><div class="checklist"><div><span class="check-icon">✓</span><span>Defined entry before trade</span><strong>92%</strong></div><div><span class="check-icon">✓</span><span>Set stop loss</span><strong>89%</strong></div><div><span class="check-icon">✓</span><span>Followed planned risk</span><strong>84%</strong></div><div><span class="check-icon check-warn">!</span><span>Avoided emotional entries</span><strong>73%</strong></div></div></article><article class="panel"><div class="panel-heading"><div><h2>Trading reminders</h2><p class="muted">Keep process ahead of outcome</p></div><span class="insight-icon">✧</span></div><div class="reminder-box"><strong>Protect your downside.</strong><p>Review your risk limits before the next session. A good process matters more than any single result.</p></div><div class="reminder-box muted-box"><strong>Review the sample size.</strong><p>Small samples can be misleading. Continue recording trades before changing your strategy.</p></div></article></div>
+      </section>
+
+      <section class="page" id="page-risk">
+        <div class="page-title-row"><div><div class="eyebrow"><span class="eyebrow-line"></span> PLAN BEFORE YOU TRADE</div><h1>Risk calculator</h1><p class="muted">Know your risk before you enter the market.</p></div><span class="safe-note"><span class="status-dot"></span> Planning tool only</span></div>
+        <div class="risk-layout"><article class="panel risk-form-panel"><div class="panel-heading"><div><h2>Trade parameters</h2><p class="muted">Enter the details for your planned setup.</p></div></div>
+          <form id="riskForm" class="form-grid"><label class="field full-field">Account balance <span class="input-wrap"><span class="input-prefix">$</span><input type="number" id="balance" min="0" step="any" value="10000" required></span></label><label class="field">Risk per trade (%)<span class="input-wrap"><input type="number" id="riskPercent" min="0.01" max="100" step="any" value="1" required><span class="input-suffix">%</span></span></label><label class="field">Direction<select id="riskDirection"><option value="Long">Long</option><option value="Short">Short</option></select></label><label class="field">Entry price<span class="input-wrap"><span class="input-prefix">$</span><input type="number" id="entryPrice" min="0.000001" step="any" value="100" required></span></label><label class="field">Stop-loss price<span class="input-wrap"><span class="input-prefix">$</span><input type="number" id="stopPrice" min="0.000001" step="any" value="98" required></span></label><label class="field">Target price<span class="input-wrap"><span class="input-prefix">$</span><input type="number" id="targetPrice" min="0.000001" step="any" value="106" required></span></label><label class="field">Position unit value <span class="help-tip" title="Multiplier for contract or lot size. Keep 1 for a simple unit-based estimate.">ⓘ</span><span class="input-wrap"><input type="number" id="unitValue" min="0.000001" step="any" value="1" required><span class="input-suffix">×</span></span></label><div class="full-field"><button type="submit" class="btn btn-primary full-button">Calculate position ↗</button></div></form><p class="form-disclaimer">Estimates only. Real sizing depends on contract specifications, fees, slippage, leverage and broker rules.</p></article>
+          <div class="risk-results"><article class="panel risk-highlight"><div class="result-label">AMOUNT AT RISK</div><div class="risk-amount" id="riskAmount">$100.00</div><p id="riskPercentText">1.00% of account balance</p><div class="risk-divider"></div><div class="risk-mini-row"><span>Account balance</span><strong id="riskBalance">$10,000.00</strong></div><div class="risk-mini-row"><span>Risk per unit</span><strong id="riskPerUnit">$2.00</strong></div></article><article class="panel result-grid-panel"><div class="result-cell"><span>Estimated units</span><strong id="positionSize">50.00</strong><small>Units / contracts</small></div><div class="result-cell"><span>Potential reward</span><strong class="positive" id="potentialReward">$300.00</strong><small>Before costs</small></div><div class="result-cell"><span>Risk : reward</span><strong id="riskReward">1 : 3.00</strong><small>Planned ratio</small></div><div class="result-cell"><span>Reward on risk</span><strong id="rewardPercent">3.00×</strong><small>Potential multiple</small></div></article><article class="panel risk-note"><span class="note-icon">✦</span><div><strong>Make risk a decision, not a reaction.</strong><p>A calculator can support planning, but it cannot guarantee an outcome. Always validate the figures for your specific market and instrument.</p></div></article></div></div>
+      </section>
+
+      <section class="page" id="page-journal">
+        <div class="page-title-row"><div><div class="eyebrow"><span class="eyebrow-line"></span> THE MIND BEHIND THE TRADE</div><h1>Mindset journal</h1><p class="muted">Build awareness around the decisions you make.</p></div><button class="btn btn-primary" id="newNoteBtn">＋ New reflection</button></div>
+        <div class="mindset-banner"><div class="mindset-orb">✧</div><div><div class="eyebrow">A SMALL DAILY PRACTICE</div><h2>Review the process, not just the result.</h2><p>Use your reflections to spot patterns, celebrate discipline, and learn from decisions without judging yourself by one trade.</p></div></div>
+        <div class="journal-summary-grid"><article class="panel mood-card"><span class="summary-label">MOST LOGGED MOOD</span><div class="mood-emoji">◡</div><h3>Focused</h3><p>Keep noticing what helps you stay present.</p></article><article class="panel mood-card"><span class="summary-label">REFLECTIONS</span><div class="mood-big" id="reflectionCount">3</div><h3>Notes captured</h3><p>Small observations add up over time.</p></article><article class="panel mood-card"><span class="summary-label">PROCESS CHECK</span><div class="mood-big green-text">84<span class="small-unit">%</span></div><h3>Plan adherence</h3><p>Illustrative score from demo content.</p></article></div>
+        <div class="section-heading"><div><h2>Recent reflections</h2><p class="muted">Your notes and lessons learned</p></div><div class="journal-filters"><button class="chip active" data-journal-filter="all">All notes</button><button class="chip" data-journal-filter="lesson">Lessons</button><button class="chip" data-journal-filter="discipline">Discipline</button></div></div>
+        <div class="journal-cards" id="journalCards"></div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="page-title-row"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR SPACE</div><h1>Settings</h1><p class="muted">Manage your workspace preferences.</p></div></div>
+        <article class="panel settings-panel"><div class="settings-section"><div class="settings-icon">◉</div><div class="settings-copy"><h2>Profile & Workspace</h2><p>Saved directly into the TradeTrack backend SQLite database.</p></div></div><form id="profileForm" class="settings-form"><label class="field">Display name<input type="text" id="displayName" value="Rhythm" required></label><label class="field">Email address<input type="email" id="displayEmail" value="rhythm@example.com" required></label><label class="field">Preferred currency<select id="currency"><option value="USD">USD — US Dollar</option><option value="INR">INR — Indian Rupee</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — British Pound</option></select></label><label class="field">Appearance<select id="appearance"><option value="dark">Dark</option><option value="light">Light</option></select></label><label class="field full-field">Monthly P&amp;L Target ($)<input type="number" id="monthlyGoal" min="100" step="100" value="4000" required></label><div class="full-field"><button class="btn btn-primary" type="submit">Save preferences</button><span class="save-message" id="settingsMessage" role="status"></span></div></form></article>
+        <article class="panel settings-panel"><div class="settings-section"><div class="settings-icon">ⓘ</div><div class="settings-copy"><h2>Backend & Database Connection</h2><p>TradeTrack is connected to a Node.js Express REST API backed by an SQLite relational database. Trades, reflections, risk simulations, and user preferences persist across sessions.</p></div></div><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn btn-secondary" id="resetDemoDataBtn">↺ Restore Sample Data</button><span class="muted" id="dbInfoText">Connected to SQLite Database</span></div></article>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="tradeModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> TRADE DETAILS</div><h2 id="modalTitle">Log a new trade</h2><p class="muted">Record the setup and review the outcome.</p></div><button class="modal-close" id="closeModal" aria-label="Close modal">×</button></div>
+      <form id="tradeForm" class="form-grid">
+        <label class="field">Instrument<input type="text" id="instrument" placeholder="e.g. EURUSD" maxlength="20" required></label>
+        <label class="field">Market<select id="market"><option>Forex</option><option>Crypto</option><option>Stocks</option><option>Indices</option><option>Commodities</option></select></label>
+        <label class="field">Direction<select id="direction"><option>Long</option><option>Short</option></select></label>
+        <label class="field">Strategy<select id="strategy"><option>London Breakout</option><option>Price Action</option><option>Trend Following</option><option>Liquidity Sweep</option><option>Other</option></select></label>
+        <label class="field">Entry price<input type="number" id="tradeEntry" min="0.000001" step="any" required></label>
+        <label class="field">Exit price<input type="number" id="tradeExit" min="0.000001" step="any" required></label>
+        <label class="field">Quantity<input type="number" id="quantity" min="0.000001" step="any" value="1" required></label>
+        <label class="field">Fees ($)<input type="number" id="fees" min="0" step="any" value="0" required></label>
+        <label class="field">Date<input type="date" id="tradeDate" required></label>
+        <label class="field">Outcome<select id="tradeOutcome"><option value="auto">Calculate automatically</option><option value="win">Winner</option><option value="loss">Loser</option><option value="even">Breakeven</option></select></label>
+        <label class="field full-field">Trade notes<textarea id="tradeNotes" rows="3" placeholder="What did you notice about this setup?"></textarea></label>
+        <div class="modal-actions full-field"><button type="button" class="btn btn-secondary" id="cancelTrade">Cancel</button><button type="submit" class="btn btn-primary">Save trade ↗</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="noteModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="noteModalTitle">
+      <div class="modal-heading">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> MINDSET REFLECTION</div>
+          <h2 id="noteModalTitle">Capture your thoughts</h2>
+          <p class="muted">Notice patterns, celebrate discipline, or document a trading lesson.</p>
+        </div>
+        <button class="modal-close" id="closeNoteModal" aria-label="Close modal">×</button>
+      </div>
+      <form id="noteForm" class="form-grid">
+        <label class="field full-field">Title
+          <input type="text" id="noteTitle" placeholder="e.g. Patience before the breakout" maxlength="80" required>
+        </label>
+        <label class="field">Category
+          <select id="noteCategory">
+            <option value="discipline">Discipline</option>
+            <option value="lesson">Lesson</option>
+          </select>
+        </label>
+        <label class="field">Mood / State of Mind
+          <input type="text" id="noteMood" placeholder="e.g. Focused, Patient, Cautious" value="Focused" required>
+        </label>
+        <label class="field full-field">Date
+          <input type="date" id="noteDate" required>
+        </label>
+        <label class="field full-field">Reflection notes
+          <textarea id="noteBody" rows="4" placeholder="What did you notice about your mindset, execution, or market condition?" required></textarea>
+        </label>
+        <div class="modal-actions full-field">
+          <button type="button" class="btn btn-secondary" id="cancelNote">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save reflection ↗</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="api.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

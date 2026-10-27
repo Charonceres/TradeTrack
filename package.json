@@ -1,0 +1,17 @@
+{
+  "name": "tradetrack-project",
+  "version": "1.0.0",
+  "description": "TradeTrack — Trading Journal and Performance Analytics full-stack application",
+  "scripts": {
+    "start": "npm --prefix TradeTrack_Backend start",
+    "dev": "npm --prefix TradeTrack_Backend run dev",
+    "install:all": "npm --prefix TradeTrack_Backend install"
+  },
+  "keywords": [
+    "trading",
+    "journal",
+    "analytics"
+  ],
+  "author": "TradeTrack",
+  "license": "ISC"
+}
